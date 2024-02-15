@@ -3,9 +3,9 @@
 import { FC, useState } from "react";
 import { Button } from "./ui/Button";
 import { cn } from "@/lib/utils";
-import IconImage from "./ui/IconImage";
 import { useToast } from "@/hooks/use-toast";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 interface UserAuthFormProps extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
@@ -39,9 +39,11 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
         onClick={loginWithGoogle}
       >
         {!isLoading && (
-          <IconImage
+          <Image
             src="/google-logo.svg"
             alt="Google Logo"
+            height="20"
+            width="20"
             className="h-4 2-4"
           />
         )}

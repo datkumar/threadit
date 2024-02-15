@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getAuthSession } from "@/lib/auth";
 import { buttonVariants } from "./ui/Button";
-import IconImage from "./ui/IconImage";
+import UserAccountNav from "./UserAccountNav";
+import Image from "next/image";
 
 export const Navbar = async () => {
   const session = await getAuthSession();
@@ -12,8 +13,7 @@ export const Navbar = async () => {
         {/* Home */}
         <Link href="/" className="flex gap-2 items-center">
           <span className="h-8 w-8 sm:h-6 sm:w-6">
-            <IconImage src="/favicon.svg" alt="favicon" />
-            {/* <FavIcon /> */}
+            <Image src="/favicon.svg" alt="favicon" height="30" width="30" />
           </span>
           {/* Hide below text on smaller devices */}
           <p className="hidden text-zinc-700 text-sm font-medium sm:block">
@@ -23,10 +23,8 @@ export const Navbar = async () => {
 
         {/* Search Bar */}
 
-        {/* Sign-in / Sign-up */}
-
-        {session ? (
-          <p>Logged-in</p>
+        {session?.user ? (
+          <UserAccountNav user={session.user} />
         ) : (
           <Link href="/sign-in" className={buttonVariants()}>
             Sign-in

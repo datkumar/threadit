@@ -1,4 +1,5 @@
 import { SignIn } from "@/components/SignIn";
+import { SignUp } from "@/components/SignUp";
 import { buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
@@ -15,9 +16,10 @@ const page = () => {
             "self-start -mt-20"
           )}
         >
-          <ChevronLeftIcon className="h-4 w-4" /> Home
+          <ChevronLeftIcon className="h-4 w-4" />
+          Home
         </Link>
-        <SignIn />
+        <SignUp />
       </div>
     </div>
   );

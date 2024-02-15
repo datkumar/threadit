@@ -1,13 +1,118 @@
 // Prisma Schema docs: https://www.prisma.io/docs/orm/prisma-schema
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+enum VoteType {
+  UP
+  DOWN
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  title       String
+  content     Json?
+  // 
+  author      User       @relation(fields: [authorId], references: [id])
+  community   Community  @relation(fields: [communityId], references: [id])
+  authorId    String
+  communityId String
+  // 
+  votes       PostVote[]
+  comments    Comment[]
+  // 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Comment {
+  id        String        @id @default(cuid())
+  text      String
+  // 
+  author    User          @relation(fields: [authorId], references: [id])
+  post      Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  votes     CommentVote[]
+  authorId  String
+  postId    String
+  // When the comment is a reply to another comment
+  replyToId String?
+  replyTo   Comment?      @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[]     @relation("ReplyTo")
+  // 
+  createdAt DateTime      @default(now())
+}
+
+model PostVote {
+  type   VoteType
+  // 
+  user   User     @relation(fields: [userId], references: [id])
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String
+  postId String
+
+  @@id([userId, postId])
+}
+
+model CommentVote {
+  type      VoteType
+  // 
+  user      User     @relation(fields: [userId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String
+  commentId String
+
+  @@id([userId, commentId])
+}
+
+model Community {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  // Community can exist without creator (when the creator User is deleted)
+  creator       User?          @relation("CreatedBy", fields: [creatorId], references: [id])
+  creatorId     String?
+  // 
+  posts         Post[]
+  subscriptions Subscription[]
+  // 
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([name])
+}
+
+model Subscription {
+  user        User      @relation(fields: [userId], references: [id])
+  community   Community @relation(fields: [communityId], references: [id])
+  userId      String
+  communityId String
+
+  @@id([userId, communityId])
+}
+
+model User {
+  id                 String         @id @default(cuid())
+  username           String?        @unique
+  name               String?
+  email              String?        @unique
+  emailVerified      DateTime?
+  image              String?
+  // 
+  posts              Post[]
+  postVotes          PostVote[]
+  comments           Comment[]
+  commentVotes       CommentVote[]
+  subscriptions      Subscription[]
+  createdCommunities Community[]    @relation("CreatedBy")
+  // 
+  accounts           Account[]
+  sessions           Session[]
 }
 
 model Account {
@@ -35,17 +140,6 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            String    @id @default(cuid())
-  username      String?   @unique
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
 }
 
 model VerificationToken {

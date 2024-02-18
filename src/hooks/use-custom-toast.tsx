@@ -20,3 +20,11 @@ export const useCustomToast = () => {
 
   return { loginToast };
 };
+
+export const errorToast = (title: string, description?: string) => {
+  toast({
+    variant: "destructive",
+    title: title,
+    description: description,
+  });
+};

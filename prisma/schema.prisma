@@ -75,8 +75,8 @@ model Community {
   id            String         @id @default(cuid())
   name          String         @unique
   // Community can exist without creator (when the creator User is deleted)
-  creator       User?          @relation("CreatedBy", fields: [creatorId], references: [id])
-  creatorId     String?
+  creator       User           @relation("CreatedBy", fields: [creatorId], references: [id])
+  creatorId     String
   // 
   posts         Post[]
   subscriptions Subscription[]

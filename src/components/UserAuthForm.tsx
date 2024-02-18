@@ -33,6 +33,7 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
   return (
     <div className={cn("flex justify-center", className)} {...props}>
       <Button
+        variant="outline"
         isLoading={isLoading}
         size="sm"
         className="w-full py-5"
@@ -44,10 +45,9 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
             alt="Google Logo"
             height="20"
             width="20"
-            className="h-4 2-4"
+            className="dark:invert h-6 w-6"
           />
         )}
-        Google
       </Button>
     </div>
   );

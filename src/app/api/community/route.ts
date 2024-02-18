@@ -1,6 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { communityValidator } from "@/lib/validators/community";
+import { CommunityValidator } from "@/lib/validators/community";
 import { z } from "zod";
 
 export const POST = async (req: Request) => {
@@ -17,7 +17,7 @@ export const POST = async (req: Request) => {
     console.log(`body: ${body}`);
 
     // Zod throws error if schema not validated
-    const { name } = communityValidator.parse(body);
+    const { name } = CommunityValidator.parse(body);
     console.log(`name: ${name}`);
 
     const communityExists = await db.community.findFirst({
@@ -54,7 +54,7 @@ export const POST = async (req: Request) => {
   } catch (err) {
     if (err instanceof z.ZodError) {
       return new Response(
-        err.message,
+        "Invalid community name",
         { status: 422 } // Unprocessable Content
       );
     }

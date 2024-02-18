@@ -3,29 +3,20 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { errorToast, useCustomToast } from "@/hooks/use-custom-toast";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import axios, { AxiosError } from "axios";
 import {
   CommunityNameRegex,
   CreateCommunityPayload,
 } from "@/lib/validators/community";
-import { toast } from "@/hooks/use-toast";
-import { useCustomToast } from "@/hooks/use-custom-toast";
-
-const showToast = (title: string, description: string) => {
-  toast({
-    variant: "destructive",
-    title: title,
-    description: description,
-  });
-};
 
 const validCommunityName = (inputValue: string) => {
   return CommunityNameRegex.test(inputValue);
 };
 
-const Page = () => {
+const CreateCommunityPage = () => {
   const router = useRouter();
   const { loginToast } = useCustomToast();
   const [inputValue, setInputValue] = useState<string>("");
@@ -45,24 +36,24 @@ const Page = () => {
       if (err instanceof AxiosError) {
         const statusCode = err.response?.status ?? 0;
         switch (statusCode) {
-          //  Unauthorized
+          // Unauthorized
           case 401:
             return loginToast();
           // Conflict
           case 409:
-            return showToast(
+            return errorToast(
               "Community already exists",
               "Please choose another name for your community"
             );
           // Unprocessable Content
           case 422:
-            return showToast(
+            return errorToast(
               "Invalid community name",
               "Your community name should be of length 3-25 characters"
             );
           // Other
           default:
-            return showToast(
+            return errorToast(
               "Oops",
               "An error occured while creating your community"
             );
@@ -105,7 +96,6 @@ const Page = () => {
             Cancel
           </Button>
           <Button
-            className="bg-emerald-600"
             disabled={!validCommunityName(inputValue)}
             onClick={() => handleCreateCommunity()}
             isLoading={isPending}
@@ -118,4 +108,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default CreateCommunityPage;

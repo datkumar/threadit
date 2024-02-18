@@ -14,15 +14,13 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, ...props }) => {
   return (
     <Avatar {...props}>
       {user.image ? (
-        <div className="relative aspect-square   ">
+        <div className="relative aspect-square h-full w-full">
           <Image
-            className="rounded-full h-5 w-5"
+            className="rounded-full "
             src={user.image}
             alt="Profile pic"
             height={avatarSize}
             width={avatarSize}
-            // style={{ objectFit: "fill" }}
-            // fill={true}
             // referrerPolicy="no-referrer"
           />
         </div>
@@ -34,7 +32,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ user, ...props }) => {
             alt="default user pic"
             height={avatarSize}
             width={avatarSize}
-            className="h-4 w-4"
+            className="h-5 w-5"
           />
         </AvatarFallback>
       )}

@@ -11,13 +11,11 @@ interface PageProps {
   };
 }
 
-const page: FC<PageProps> = async ({ params }: PageProps) => {
-  const { slug } = params;
-
+const CommunityPage: FC<PageProps> = async ({ params }: PageProps) => {
   const session = await getAuthSession();
 
   const community = await db.community.findFirst({
-    where: { name: slug },
+    where: { name: params.slug },
     include: {
       posts: {
         include: {
@@ -31,9 +29,7 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
     },
   });
 
-  if (!community) {
-    return notFound();
-  }
+  if (!community) return notFound();
 
   return (
     <>
@@ -45,4 +41,4 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
   );
 };
 
-export default page;
+export default CommunityPage;

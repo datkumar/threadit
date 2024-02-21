@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { FC } from "react";
 import { format } from "date-fns";
 import { JoinLeaveToggle } from "@/components/JoinLeaveToggle";
+import { buttonVariants } from "@/components/ui/Button";
+import Link from "next/link";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +14,9 @@ interface LayoutProps {
   };
 }
 
-const Layout: FC<LayoutProps> = async ({ children, params: { slug } }) => {
+const CommunityLayout: FC<LayoutProps> = async ({ children, params }) => {
+  const { slug } = params;
+
   const session = await getAuthSession();
 
   const community = await db.community.findFirst({
@@ -27,9 +31,7 @@ const Layout: FC<LayoutProps> = async ({ children, params: { slug } }) => {
     },
   });
 
-  if (!community) {
-    return notFound();
-  }
+  if (!community) return notFound();
 
   let isSubscribed = false;
   if (session?.user) {
@@ -93,6 +95,16 @@ const Layout: FC<LayoutProps> = async ({ children, params: { slug } }) => {
                   isSubscribed={isSubscribed}
                 />
               )}
+
+              <Link
+                href={`/c/${slug}/submit`}
+                className={buttonVariants({
+                  variant: "outline",
+                  className: "w-full mb-6",
+                })}
+              >
+                Create Post
+              </Link>
             </dl>
           </div>
         </div>
@@ -101,4 +113,4 @@ const Layout: FC<LayoutProps> = async ({ children, params: { slug } }) => {
   );
 };
 
-export default Layout;
+export default CommunityLayout;

@@ -1,11 +1,11 @@
-import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { notFound } from "next/navigation";
-import { FC } from "react";
-import { format } from "date-fns";
 import { JoinLeaveToggle } from "@/components/JoinLeaveToggle";
 import { buttonVariants } from "@/components/ui/Button";
+import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { format } from "date-fns";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { FC } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -99,7 +99,6 @@ const CommunityLayout: FC<LayoutProps> = async ({ children, params }) => {
               <Link
                 href={`/c/${slug}/submit`}
                 className={buttonVariants({
-                  variant: "outline",
                   className: "w-full mb-6",
                 })}
               >

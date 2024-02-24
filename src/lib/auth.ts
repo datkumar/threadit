@@ -1,9 +1,11 @@
-import type { Adapter } from "next-auth/adapters";
-import { NextAuthOptions, getServerSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { nanoid } from "nanoid";
+import { NextAuthOptions, getServerSession } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import { db } from "./db";
-import { nanoid } from "nanoid";
+
+export const getAuthSession = () => getServerSession(authOptions);
 
 // Configure NextAuth options
 export const authOptions: NextAuthOptions = {
@@ -66,5 +68,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-export const getAuthSession = () => getServerSession(authOptions);

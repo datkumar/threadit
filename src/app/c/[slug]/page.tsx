@@ -1,9 +1,10 @@
-import { FC } from "react";
+import MiniCreatePost from "@/components/MiniCreatePost";
+import PostFeed from "@/components/PostFeed";
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/constants";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { notFound } from "next/navigation";
-import MiniCreatePost from "@/components/MiniCreatePost";
+import { FC } from "react";
 
 interface PageProps {
   params: {
@@ -24,6 +25,9 @@ const CommunityPage: FC<PageProps> = async ({ params }: PageProps) => {
           votes: true,
           comments: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
         take: INFINITE_SCROLL_PAGINATION_RESULTS,
       },
     },
@@ -37,6 +41,7 @@ const CommunityPage: FC<PageProps> = async ({ params }: PageProps) => {
         c/{community.name}
       </h1>
       <MiniCreatePost session={session} />
+      <PostFeed initialPosts={community.posts} communityName={community.name} />
     </>
   );
 };

@@ -38,7 +38,8 @@ export const POST = async (req: Request) => {
     });
     if (isCreator) {
       return new Response(
-        "You cannot unsubscribe from the community you created"
+        "You cannot unsubscribe from the community you created",
+        { status: 400 }
       );
     }
 

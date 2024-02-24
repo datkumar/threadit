@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
       );
     }
 
-    // Add a subscription of that user to that community
+    // Add a subscription of that user to the community he just created
     await db.subscription.create({
       data: {
         communityId,

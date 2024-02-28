@@ -1,5 +1,5 @@
 import { formatTimeToNow } from "@/lib/utils";
-import { Post, PostVote, User } from "@prisma/client";
+import type { Post, PostVote, User } from "@prisma/client";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { FC, useRef } from "react";
 import EditorOutput from "./EditorOutput";

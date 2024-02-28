@@ -1,8 +1,10 @@
 "use client";
 
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/constants";
+import { getVoteSum } from "@/lib/utils";
 import { ExtendedPost } from "@/types/db";
 import { useIntersection } from "@mantine/hooks";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -67,14 +69,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
   return (
     <ul className="flex flex-col col-span-2 space-y-6">
       {posts.map((post, idx) => {
-        // Net vote total after considering all upvotes and downvotes
-        const voteSum = post.votes.reduce((sum, vote) => {
-          if (vote.type === "UP") return sum + 1;
-          if (vote.type === "DOWN") return sum - 1;
-          return sum;
-        }, 0);
-
-        // User's vote on the post
+        const voteSum = getVoteSum(post.votes);
         const currentVote = post.votes.find(
           (vote) => vote.userId === session?.user.id
         );
@@ -93,19 +88,28 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
             </li>
           );
         }
-
         // Normal post not at the ends
-        return (
-          <Post
-            key={post.id}
-            post={post}
-            communityName={post.community.name}
-            currentVote={currentVote}
-            voteSum={voteSum}
-            commentCount={post.comments.length}
-          />
-        );
+        else {
+          return (
+            <li key={post.id}>
+              <Post
+                key={post.id}
+                post={post}
+                communityName={post.community.name}
+                currentVote={currentVote}
+                voteSum={voteSum}
+                commentCount={post.comments.length}
+              />
+            </li>
+          );
+        }
       })}
+
+      {isFetchingNextPage && (
+        <li className="flex justify-center">
+          <ReloadIcon className="w-6 h-6 text-zinc-500 animate-spin" />
+        </li>
+      )}
     </ul>
   );
 };

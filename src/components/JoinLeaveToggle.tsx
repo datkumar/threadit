@@ -1,13 +1,13 @@
 "use client";
 
-import { FC, startTransition } from "react";
-import { SubscribeToCommunityPayload } from "@/lib/validators/community";
-import axios, { AxiosError } from "axios";
 import { errorToast, useCustomToast } from "@/hooks/use-custom-toast";
-import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
-import { Button } from "./ui/Button";
 import { toast } from "@/hooks/use-toast";
+import { SubscribeToCommunityPayload } from "@/lib/validators/community";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { FC, startTransition } from "react";
+import { Button } from "./ui/Button";
 
 interface JoinLeaveToggleProps {
   communityId: string;
@@ -23,6 +23,7 @@ export const JoinLeaveToggle: FC<JoinLeaveToggleProps> = ({
   const router = useRouter();
   const { loginToast } = useCustomToast();
 
+  // SUBSCRIBE
   const { mutate: subscribe, isPending: isSubscribing } = useMutation({
     mutationFn: async () => {
       const payload: SubscribeToCommunityPayload = {
@@ -32,16 +33,13 @@ export const JoinLeaveToggle: FC<JoinLeaveToggleProps> = ({
       return data as string;
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        const statusCode = err.response?.status ?? 0;
-        switch (statusCode) {
-          // Unauthorized
-          case 401:
-            return loginToast();
-          default:
-            return errorToast("Oops", "Something went wrong. Please try again");
-        }
+      if (err instanceof AxiosError && err.response?.status === 401) {
+        return loginToast();
       }
+      return errorToast(
+        "Could not subscribe",
+        "Something went wrong. Please try again"
+      );
     },
     onSuccess: () => {
       // Refresh the page, but without losing any state
@@ -55,6 +53,7 @@ export const JoinLeaveToggle: FC<JoinLeaveToggleProps> = ({
     },
   });
 
+  // UNSUBSCRIBE
   const { mutate: unsubscribe, isPending: isUnsubscribing } = useMutation({
     mutationFn: async () => {
       const payload: SubscribeToCommunityPayload = {
@@ -64,16 +63,13 @@ export const JoinLeaveToggle: FC<JoinLeaveToggleProps> = ({
       return data as string;
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        const statusCode = err.response?.status ?? 0;
-        switch (statusCode) {
-          // Unauthorized
-          case 401:
-            return loginToast();
-          default:
-            return errorToast("Oops", "Something went wrong. Please try again");
-        }
+      if (err instanceof AxiosError && err.response?.status === 401) {
+        return loginToast();
       }
+      return errorToast(
+        "Could not unsubscribe",
+        "Something went wrong. Please try again"
+      );
     },
     onSuccess: () => {
       // Refresh the page, but without losing any state

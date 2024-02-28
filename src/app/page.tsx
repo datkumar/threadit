@@ -1,13 +1,19 @@
+import CustomFeed from "@/components/CustomFeed";
+import GeneralFeed from "@/components/GeneralFeed";
 import { Button } from "@/components/ui/Button";
+import { getAuthSession } from "@/lib/auth";
 import { HomeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getAuthSession();
+
   return (
     <main>
       <h1 className="font-bold text-3xl md:text-4xl">Your Feed</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
-        {/* TODO: Feed */}
+        {/* Feed of posts based on guest OR logged-in user */}
+        {session ? <CustomFeed /> : <GeneralFeed />}
 
         {/* Community Info */}
         <div className="overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">

@@ -2,23 +2,10 @@ import { CACHE_AFTER_UPVOTES } from "@/constants";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
+import { getVoteSum } from "@/lib/utils";
 import { PostVoteValidator } from "@/lib/validators/vote";
 import { CachedPost } from "@/types/redis";
-import type { PostVote } from "@prisma/client";
 import { z } from "zod";
-
-function getVoteSum(votes: PostVote[]): number {
-  return votes.reduce((sum, vote) => {
-    switch (vote.type) {
-      case "UP":
-        return sum + 1;
-      case "DOWN":
-        return sum - 1;
-      default:
-        return sum;
-    }
-  }, 0);
-}
 
 export const PATCH = async (req: Request) => {
   try {

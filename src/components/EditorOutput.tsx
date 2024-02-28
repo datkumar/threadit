@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { FC } from "react";
@@ -22,12 +24,13 @@ function CustomImageRenderer({ data }: any) {
   const src = data.file.url;
 
   return (
-    <div className="relative w-full min-h-[15-rem]">
+    <div className="relative w-full min-h-[15rem]">
       <Image
         src={src}
         alt="image"
-        height="240"
-        width="240"
+        fill
+        // height="240"
+        // width="240"
         className="object-contain"
       />
     </div>
@@ -35,8 +38,6 @@ function CustomImageRenderer({ data }: any) {
 }
 
 function CustomCodeRenderer({ data }: any) {
-  const src = data.file.url;
-
   return (
     <pre className="bg-gray-800 rounded-md p-4">
       <code className="text-gray-100 text-sm">{data.code}</code>

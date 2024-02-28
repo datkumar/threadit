@@ -2,23 +2,23 @@
 
 import { errorToast, useCustomToast } from "@/hooks/use-custom-toast";
 import { cn } from "@/lib/utils";
-import { PostVoteRequest } from "@/lib/validators/vote";
+import { CommentVoteRequest } from "@/lib/validators/vote";
 import { usePrevious } from "@mantine/hooks";
-import type { VoteType } from "@prisma/client";
+import type { CommentVote, VoteType } from "@prisma/client";
 import { TriangleDownIcon, TriangleUpIcon } from "@radix-ui/react-icons";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { FC, useEffect, useState } from "react";
-import { Button } from "../ui/Button";
+import { FC, useState } from "react";
+import { Button } from "./ui/Button";
 
-interface PostVoteClientProps {
-  postId: string;
+interface CommentVoteClientProps {
+  commentId: string;
   initialVoteSum: number;
-  initialVote?: VoteType | null;
+  initialVote?: Pick<CommentVote, "type">;
 }
 
-const PostVoteClient: FC<PostVoteClientProps> = ({
-  postId,
+const CommentVoteClient: FC<CommentVoteClientProps> = ({
+  commentId,
   initialVoteSum: initialVoteSum,
   initialVote,
 }) => {
@@ -27,26 +27,23 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
   const [currVote, setCurrVote] = useState(initialVote);
   const prevVote = usePrevious(currVote);
 
-  // Sync initial vote between the client and the server
-  useEffect(() => setCurrVote(initialVote), [initialVote]);
-
   const { mutate: giveVote } = useMutation({
     mutationFn: async (voteType: VoteType) => {
-      const payload: PostVoteRequest = {
-        postId,
+      const payload: CommentVoteRequest = {
+        commentId,
         voteType,
       };
       // Updating existing resource (not creating new one) so PATCH request
-      await axios.patch("/api/community/post/vote", payload);
+      await axios.patch("/api/community/post/comment/vote", payload);
     },
     // Optimistic updates (reflects instant change on UI assuming mutation succeeded)
     onMutate: (incomingVoteType: VoteType) => {
-      if (currVote === incomingVoteType) {
+      if (currVote?.type === incomingVoteType) {
         setCurrVote(undefined);
         if (incomingVoteType === "UP") setVoteSum((prev) => prev - 1);
         else if (incomingVoteType === "DOWN") setVoteSum((prev) => prev + 1);
       } else {
-        setCurrVote(incomingVoteType);
+        setCurrVote({ type: incomingVoteType });
         if (incomingVoteType === "UP") {
           setVoteSum((prev) => prev + (currVote ? 2 : 1));
         } else if (incomingVoteType === "DOWN") {
@@ -69,31 +66,33 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
   });
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-0 pr-3 sm:w-20 pb-4 sm:pb-0">
+    <div className="flex gap-1">
       <Button
         aria-label="upvote"
         onClick={() => giveVote("UP")}
         variant="ghost"
-        size="sm"
+        size="icon"
+        className="pt-1"
       >
         <TriangleUpIcon
-          className={cn("h-10 w-10 text-zinc-300", {
-            "text-orange-600 fill-orange-600": currVote === "UP",
+          className={cn("h-8 w-8 text-zinc-300 ", {
+            "text-orange-600 fill-orange-600": currVote?.type === "UP",
           })}
         />
       </Button>
-      <p className="text-center py-2 font-medium text-sm text-zinc-900">
+      <p className="text-center px-1 py-2 font-medium text-sm text-zinc-900">
         {voteSum}
       </p>
       <Button
         aria-label="downvote"
         onClick={() => giveVote("DOWN")}
         variant="ghost"
-        size="sm"
+        size="icon"
+        className="pb-1"
       >
         <TriangleDownIcon
-          className={cn("h-10 w-10 text-zinc-300", {
-            "text-violet-500 fill-violet-500": currVote === "DOWN",
+          className={cn("h-8 w-8 text-zinc-300", {
+            "text-violet-500 fill-violet-500": currVote?.type === "DOWN",
           })}
         />
       </Button>
@@ -101,4 +100,4 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
   );
 };
 
-export default PostVoteClient;
+export default CommentVoteClient;

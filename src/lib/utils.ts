@@ -1,3 +1,4 @@
+import type { CommentVote, PostVote } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { formatDistanceToNowStrict } from "date-fns";
 import locale from "date-fns/locale/en-IN";
@@ -53,4 +54,18 @@ export function formatTimeToNow(date: Date): string {
       formatDistance,
     },
   });
+}
+
+// Net vote total after considering all upvotes and downvotes
+export function getVoteSum(votes: PostVote[] | CommentVote[]): number {
+  return votes.reduce((sum, vote) => {
+    switch (vote.type) {
+      case "UP":
+        return sum + 1;
+      case "DOWN":
+        return sum - 1;
+      default:
+        return sum;
+    }
+  }, 0);
 }

@@ -5,6 +5,10 @@ import { getAuthSession } from "@/lib/auth";
 import { HomeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
+// Opt out of caching for all data requests in the route segment
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 export default async function Home() {
   const session = await getAuthSession();
 

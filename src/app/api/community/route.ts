@@ -18,12 +18,10 @@ export const POST = async (req: Request) => {
 
     // Zod throws error if schema not validated
     const { name } = CommunityValidator.parse(body);
-    console.log(`name: ${name}`);
 
     const communityExists = await db.community.findFirst({
       where: { name },
     });
-
     if (communityExists) {
       return new Response(
         "Community already exists",

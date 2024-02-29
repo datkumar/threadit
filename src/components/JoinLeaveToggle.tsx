@@ -1,7 +1,10 @@
 "use client";
 
-import { errorToast, useCustomToast } from "@/hooks/use-custom-toast";
-import { toast } from "@/hooks/use-toast";
+import {
+  errorToast,
+  successToast,
+  useCustomToast,
+} from "@/hooks/use-custom-toast";
 import { SubscribeToCommunityPayload } from "@/lib/validators/community";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
@@ -46,10 +49,10 @@ export const JoinLeaveToggle: FC<JoinLeaveToggleProps> = ({
       startTransition(() => {
         router.refresh();
       });
-      return toast({
-        title: "Subscription successful",
-        description: `You are now a member of c/${communityName}`,
-      });
+      return successToast(
+        "Subscription successful",
+        `You are now a member of c/${communityName}`
+      );
     },
   });
 
@@ -76,10 +79,10 @@ export const JoinLeaveToggle: FC<JoinLeaveToggleProps> = ({
       startTransition(() => {
         router.refresh();
       });
-      return toast({
-        title: "Unsubscribed",
-        description: `You are no longer a member of c/${communityName}`,
-      });
+      return successToast(
+        "Unsubscribed",
+        `You are no longer a member of c/${communityName}`
+      );
     },
   });
 

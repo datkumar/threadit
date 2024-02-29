@@ -1,9 +1,9 @@
 "use client";
 
-import { FC } from "react";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { Button } from "./ui/Button";
 import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { Button } from "./ui/Button";
 
 const CloseModal: FC = () => {
   // Note: using router from 'next/navigation' NOT 'next/router'

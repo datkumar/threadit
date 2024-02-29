@@ -1,17 +1,17 @@
 "use client";
 
 import { User } from "next-auth";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { FC } from "react";
+import UserAvatar from "./UserAvatar";
 import {
   DropdownMenu,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
-import UserAvatar from "./UserAvatar";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
 
 // Note: 'User' imported from NextAuth, NOT Prisma
 interface UserAccountNavProps {
@@ -57,7 +57,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="cursor-pointer"
+          className="cursor-pointer text-red-500 font-semibold"
           onSelect={(event) => {
             event.preventDefault();
             signOut({ callbackUrl: "/sign-in" });

@@ -1,10 +1,14 @@
 import { z } from "zod";
 
-// Strings of length 3-25 characters where the characters can be alphabets, numbers, underscores
-export const CommunityNameRegex = RegExp("^[a-zA-Z0-9_]{3,25}$");
+// Strings of length 3-25 where characters can be alphabets/numbers/underscores/dashes
+export const CommunityNameRegex = RegExp("^[a-zA-Z0-9_-]+$");
 
 export const CommunityValidator = z.object({
-  name: z.string().regex(CommunityNameRegex),
+  name: z
+    .string()
+    .min(3, "Community name must be at least 3 characters long")
+    .max(25, "Community name can be max 25 characters long")
+    .regex(CommunityNameRegex, "Invalid chareacters present"),
 });
 
 export type CreateCommunityPayload = z.infer<typeof CommunityValidator>;

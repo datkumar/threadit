@@ -1,12 +1,12 @@
 "use client";
 
-import { FC } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { Session } from "next-auth";
 import { ImageIcon, Link1Icon } from "@radix-ui/react-icons";
-import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
+import { Session } from "next-auth";
+import { usePathname, useRouter } from "next/navigation";
+import { FC } from "react";
 import UserAvatar from "./UserAvatar";
+import { Button } from "./ui/Button";
+import { Input } from "./ui/Input";
 
 interface MiniCreatePostProps {
   session: Session | null;
@@ -17,7 +17,7 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
   const pathName = usePathname();
 
   return (
-    <li className="overflow-hidden rounded-md bg-white shadow">
+    <div className="overflow-hidden rounded-md bg-white shadow">
       <div className="h-full px-6 py-4 flex justify-between gap-1">
         <div className="relative h-5 w-5 top-2 mr-2">
           <UserAvatar
@@ -51,7 +51,7 @@ const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
           <Link1Icon className="w-5 h-5 text-zinc-600" />
         </Button>
       </div>
-    </li>
+    </div>
   );
 };
 

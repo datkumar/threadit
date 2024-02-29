@@ -1,7 +1,6 @@
 "use client";
 
-import { errorToast } from "@/hooks/use-custom-toast";
-import { toast } from "@/hooks/use-toast";
+import { errorToast, successToast } from "@/hooks/use-custom-toast";
 import { uploadFiles } from "@/lib/uploadthing";
 import { PostCreationRequest, PostValidator } from "@/lib/validators/post";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -154,9 +153,10 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
       const redirectPath = pathName.split("/").slice(0, -1).join("/");
       router.push(redirectPath);
       router.refresh(); // Get new version of feed (not from cache)
-      return toast({
-        title: "Post successfully published",
-      });
+      return successToast(
+        "Post published",
+        "Congrats! Your post has been published"
+      );
     },
     onError: () => {
       return errorToast(

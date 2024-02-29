@@ -1,16 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { errorToast, useCustomToast } from "@/hooks/use-custom-toast";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import axios, { AxiosError } from "axios";
+import {
+  errorToast,
+  successToast,
+  useCustomToast,
+} from "@/hooks/use-custom-toast";
 import {
   CommunityNameRegex,
   CreateCommunityPayload,
 } from "@/lib/validators/community";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const validCommunityName = (inputValue: string) => {
   return CommunityNameRegex.test(inputValue);
@@ -30,29 +34,26 @@ const CreateCommunityPage = () => {
       return data as string;
     },
     onSuccess: (data) => {
+      successToast("Congrats!!", "Your community has been created");
       router.push(`/c/${data}`);
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
         const statusCode = err.response?.status ?? 0;
         switch (statusCode) {
-          // Unauthorized
-          case 401:
+          case 401: // Unauthorized
             return loginToast();
-          // Conflict
-          case 409:
+          case 409: // Conflict
             return errorToast(
               "Community already exists",
               "Please choose another name for your community"
             );
-          // Unprocessable Content
-          case 422:
+          case 422: // Unprocessable Content
             return errorToast(
               "Invalid community name",
               "Your community name should be of length 3-25 characters"
             );
-          // Other
-          default:
+          default: // Other
             return errorToast(
               "Oops",
               "An error occured while creating your community"
@@ -76,8 +77,8 @@ const CreateCommunityPage = () => {
             What should we call your community?
           </p>
           <p className="text-xs pb-2 text-zinc-400">
-            Community names must be of length 3-25 characters consisting of
-            alphabets, numbers, underscores
+            Community names can be 3-25 characters long comprising alphabets,
+            numbers, underscores(_) and hyphens(-)
           </p>
           <div className="relative">
             <p className="absolute text-sm left-0 w-8 inset-y-0 grid place-items-center text-zinc-400">

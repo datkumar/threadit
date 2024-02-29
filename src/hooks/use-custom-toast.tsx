@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { toast } from "./use-toast";
-import { Button } from "@/components/ui/Button";
 
 export const useCustomToast = () => {
   const loginToast = () => {
@@ -24,6 +24,15 @@ export const useCustomToast = () => {
 export const errorToast = (title: string, description?: string) => {
   toast({
     variant: "destructive",
+    title: title,
+    description: description,
+  });
+};
+
+export const successToast = (title: string, description?: string) => {
+  toast({
+    className: "bg-green-300",
+    variant: "default",
     title: title,
     description: description,
   });

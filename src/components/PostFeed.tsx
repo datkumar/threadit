@@ -93,7 +93,6 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
           return (
             <li key={post.id}>
               <Post
-                key={post.id}
                 post={post}
                 communityName={post.community.name}
                 currentVote={currentVote}

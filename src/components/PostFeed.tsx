@@ -45,27 +45,29 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
     return data as ExtendedPost[];
   };
 
-  // More values: data.pages[], hasNextPage, similar values for prev. page
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["infinte-scroll-posts"],
-    initialPageParam: 1,
-    initialData: {
-      pageParams: [1],
-      pages: [initialPosts],
-    },
-    queryFn: fetchPage,
-    // 1-based indexing, i.e. last element has page=length
-    getNextPageParam: (lastPage, allPages) => allPages.length + 1,
-  });
+  // Can also fetch previous pages in similar way
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["infinte-scroll-posts"],
+      initialPageParam: 1,
+      initialData: {
+        pageParams: [1],
+        pages: [initialPosts],
+      },
+      queryFn: fetchPage,
+      // 1-based indexing, i.e. last element has page=length
+      getNextPageParam: (lastPage, allPages) => allPages.length + 1,
+    });
 
-  // Fetch next page when the last post entry is intersecting with v iewport
+  // Fetch next page (if exists) when the last post entry is intersecting with viewport
   useEffect(() => {
-    if (lastPostEntry?.isIntersecting) {
+    if (hasNextPage && lastPostEntry?.isIntersecting) {
       fetchNextPage();
     }
-  }, [lastPostEntry, fetchNextPage]);
+  }, [lastPostEntry, hasNextPage, fetchNextPage]);
 
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
+
   return (
     <ul className="flex flex-col col-span-2 space-y-6">
       {posts.map((post, idx) => {

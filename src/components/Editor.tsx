@@ -82,16 +82,14 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
             config: {
               uploader: {
                 async uploadByFile(file: File) {
-                  // Upload  to UploadThing
+                  // Upload to UploadThing
                   const [res] = await uploadFiles("imageUploader", {
                     files: [file],
                   });
                   console.log(res);
                   return {
                     success: 1,
-                    file: {
-                      url: res.url,
-                    },
+                    file: { url: res.url },
                   };
                 },
               },

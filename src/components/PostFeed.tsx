@@ -56,7 +56,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, communityName }) => {
       },
       queryFn: fetchPage,
       // 1-based indexing, i.e. last element has page=length
-      getNextPageParam: (lastPage, allPages) => allPages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     });
 
   // Fetch next page (if exists) when the last post entry is intersecting with viewport

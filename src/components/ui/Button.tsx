@@ -65,7 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading ? (
           <div className="relative">
             <div className="invisible">children</div>
-            <ReloadIcon className="absolute inset-0  w-full h-full p-1 animate-spin " />
+            <ReloadIcon className="absolute inset-0 w-full h-full p-1 animate-spin " />
           </div>
         ) : (
           children

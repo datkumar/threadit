@@ -69,30 +69,30 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
   });
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-0 pr-3 sm:w-20 pb-4 sm:pb-0">
+    <div className="flex flex-col my-2">
       <Button
+        size="sm"
+        variant="ghost"
         aria-label="upvote"
         onClick={() => giveVote("UP")}
-        variant="ghost"
-        size="sm"
+        className="px-1 py-2"
       >
         <TriangleUpIcon
-          className={cn("h-10 w-10 text-zinc-300", {
+          className={cn("h-16 w-10 text-zinc-300", {
             "text-orange-600 fill-orange-600": currVote === "UP",
           })}
         />
       </Button>
-      <p className="text-center py-2 font-medium text-sm text-zinc-900">
-        {voteSum}
-      </p>
+      <p className="text-center font-medium text-sm text-zinc-900">{voteSum}</p>
       <Button
         aria-label="downvote"
         onClick={() => giveVote("DOWN")}
         variant="ghost"
         size="sm"
+        className="px-1 py-2"
       >
         <TriangleDownIcon
-          className={cn("h-10 w-10 text-zinc-300", {
+          className={cn("h-16 w-10 text-zinc-300", {
             "text-violet-500 fill-violet-500": currVote === "DOWN",
           })}
         />

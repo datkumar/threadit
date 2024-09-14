@@ -13,7 +13,7 @@ export const SignIn = () => {
           height="50"
           className="mx-auto h-6 w-6"
         />
-        <h1 className="text-2xl font-semibold tracking-tight">Welcome Back</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Log back in</h1>
         <p className="text-sm max-w-xs mx-auto">
           By continuing, you are agreeing to our User&nbsp;Agreement and
           Privacy&nbsp;Policy

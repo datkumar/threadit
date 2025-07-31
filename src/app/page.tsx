@@ -17,7 +17,7 @@ export default async function Home() {
 
         {/* Community Info */}
         <div className="overflow-hidden h-fit rounded-lg shadow border-1  order-first md:order-last">
-          <div className="bg-red-100 px-6 py-4 ">
+          <div className="bg-sky-100 px-6 py-4 ">
             <p className="font-semibold py-3 flex items-center gap-1.5">
               <HomeIcon className="w-4 h-4 " />
               Home

@@ -6,18 +6,17 @@ import { db } from "@/lib/db";
 import { format } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FC } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
-const CommunityLayout: FC<LayoutProps> = async ({ children, params }) => {
-  const { slug } = params;
-
+export default async function CommunityLayout({
+  children,
+  params,
+}: LayoutProps) {
+  const { slug } = await params;
   const session = await getAuthSession();
 
   const community = await db.community.findFirst({
@@ -106,6 +105,4 @@ const CommunityLayout: FC<LayoutProps> = async ({ children, params }) => {
       </div>
     </div>
   );
-};
-
-export default CommunityLayout;
+}

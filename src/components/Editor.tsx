@@ -34,7 +34,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
   const pathName = usePathname();
   const router = useRouter();
 
-  const editorRef = useRef<EditorJS>();
+  const editorRef = useRef<EditorJS>(undefined);
   const _titleRef = useRef<HTMLTextAreaElement>(null);
   // Define the title ref separately
   const { ref: titleRef, ...rest } = register("title");
@@ -131,7 +131,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
       // Cleanup: Un-initalize the Editor
       return () => {
         editorRef.current?.destroy();
-        editorRef.current = undefined;
+        // editorRef.current = undefined;
       };
     }
   }, [isMounted, initEditor]);

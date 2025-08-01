@@ -2,16 +2,13 @@ import Editor from "@/components/Editor";
 import { Button } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
-import { FC } from "react";
 
 interface PageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
-const CreatePostPage: FC<PageProps> = async ({ params }: PageProps) => {
-  const { slug } = params;
+export default async function CreatePostPage({ params }: PageProps) {
+  const { slug } = await params;
 
   const community = await db.community.findFirst({
     where: { name: slug },
@@ -41,6 +38,4 @@ const CreatePostPage: FC<PageProps> = async ({ params }: PageProps) => {
       </div>
     </div>
   );
-};
-
-export default CreatePostPage;
+}

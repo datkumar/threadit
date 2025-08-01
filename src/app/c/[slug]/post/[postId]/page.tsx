@@ -11,10 +11,8 @@ import { ReloadIcon, TriangleUpIcon } from "@radix-ui/react-icons";
 import { notFound } from "next/navigation";
 import { FC, Suspense } from "react";
 
-interface CommunityPostPageProps {
-  params: {
-    postId: string;
-  };
+interface PageProps {
+  params: Promise<{ postId: string }>;
 }
 
 export const dynamic = "force-dynamic";
@@ -27,9 +25,9 @@ type PostType =
     })
   | null;
 
-const CommunityPostPage: FC<CommunityPostPageProps> = async ({
-  params: { postId },
-}) => {
+export default async function CommunityPostPage({ params }: PageProps) {
+  const { postId } = await params;
+
   const cachedPost = (await redis.hgetall(`post:${postId}`)) as CachedPost;
 
   let post: PostType = null;
@@ -86,7 +84,7 @@ const CommunityPostPage: FC<CommunityPostPageProps> = async ({
       </div>
     </div>
   );
-};
+}
 
 // Mock it to look like 'PostVoteClient' (without any interactivity)
 const PostVoteShell = () => {
@@ -107,5 +105,3 @@ const PostVoteShell = () => {
     </div>
   );
 };
-
-export default CommunityPostPage;

@@ -1,5 +1,6 @@
 "use client";
 
+import EditorJS from "@editorjs/editorjs";
 import { errorToast, successToast } from "@/hooks/use-custom-toast";
 import { uploadFiles } from "@/lib/uploadthing";
 import { PostCreationRequest, PostValidator } from "@/lib/validators/post";
@@ -10,8 +11,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import TextAreaAutoSize from "react-textarea-autosize";
-
-import type EditorJS from "@editorjs/editorjs";
 
 interface EditorProps {
   communityId: string;
@@ -41,7 +40,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   const initEditor = useCallback(async () => {
-    const EditorJS = (await import("@editorjs/editorjs")).default;
+    // const EditorJS = (await import("@editorjs/editorjs")).default;
     const Header = (await import("@editorjs/header")).default;
     const Embed = (await import("@editorjs/embed")).default;
     const LinkTool = (await import("@editorjs/link")).default;
@@ -58,7 +57,7 @@ const Editor: FC<EditorProps> = ({ communityId }) => {
         onReady() {
           editorRef.current = editor;
         },
-        placeholder: "Type here to write your post...",
+        placeholder: "Write something ...",
         inlineToolbar: true,
         data: { blocks: [] },
         // Plugins used

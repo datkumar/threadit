@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { formatTimeToNow } from "@/lib/utils";
+import { safeParseEditorContent } from "@/lib/validators/editor-output-content";
 import { CachedPost } from "@/types/redis";
 import type { Post, PostVote, User } from "@prisma/client";
 import { ReloadIcon, TriangleUpIcon } from "@radix-ui/react-icons";
@@ -36,18 +37,19 @@ export default async function CommunityPostPage({ params }: PageProps) {
   if (!cachedPost) {
     post = await db.post.findFirst({
       where: { id: postId },
-      include: {
-        author: true,
-        votes: true,
-      },
+      include: { author: true, votes: true },
     });
   }
 
   // Post doesn't exist
   if (!post && !cachedPost) return notFound();
 
+  // Get the content from either source and parse it safely
+  const content = post?.content ?? cachedPost.content;
+  const parsedContent = safeParseEditorContent(content);
+
   return (
-    <div className="bg-white px-2">
+    <div className="bg-white px-2 rounded-lg">
       <div className="h-full flex flex-row items-start justify-start">
         {/* Votes streamed-in */}
         <Suspense fallback={<PostVoteShell />}>
@@ -62,16 +64,19 @@ export default async function CommunityPostPage({ params }: PageProps) {
             }}
           />
         </Suspense>
-        {/* Post content */}
+
+        {/* Post's contents */}
         <div className="w-full flex-1 bg-white p-4 rounded-sm">
           <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
             Posted by u/{post?.author.username ?? cachedPost.authorUsername}{" "}
             {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createdAt))}
           </p>
-          <h1 className="text-xl font-semibold py-2 leading-5 text-gray-900">
+
+          <h1 className="text-2xl font-bold pt-3 pb-2 leading-5 text-gray-900">
             {post?.title ?? cachedPost.title}
           </h1>
-          <EditorOutput content={post?.content ?? cachedPost.content} />
+          <EditorOutput content={parsedContent} />
+
           {/* Comments streamed-in */}
           <Suspense
             fallback={

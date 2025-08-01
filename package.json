@@ -2,6 +2,18 @@
   "name": "threadit",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.14.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "@tailwindcss/oxide",
+      "msgpackr-extract",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
   "scripts": {
     "dev": "next dev",
     "dev-local": "echo \"Local IP: $(hostname -I)\" && next dev -H 0.0.0.0",
@@ -11,7 +23,6 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.10.0",
     "@editorjs/code": "^2.9.3",
     "@editorjs/editorjs": "^2.30.8",
     "@editorjs/embed": "^2.7.6",
@@ -24,6 +35,7 @@
     "@editorjs/table": "^2.4.5",
     "@hookform/resolvers": "^5.2.1",
     "@mantine/hooks": "^8.2.2",
+    "@auth/prisma-adapter": "^2.10.0",
     "@prisma/client": "^6.13.0",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.14",

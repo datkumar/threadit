@@ -6,6 +6,9 @@
 .pnp.js
 .yarn/install-state.gz
 
+# Since this is not a monorepo
+pnpm-workspace.yaml
+
 # testing
 /coverage
 

@@ -71,25 +71,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           children
         )}
       </Comp>
-
-      // <Comp
-      //   className={cn(buttonVariants({ variant, size, className }))}
-      //   ref={ref}
-      //   disabled={isLoading}
-      //   {...props}
-      // />
     );
   }
 );
 Button.displayName = "Button";
-
-// function LoadingButton(loadingMessage?: string) {
-//   return (
-//     <Button isLoading disabled>
-//       <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-//       {loadingMessage || "Please wait"}
-//     </Button>
-//   );
-// }
 
 export { Button, buttonVariants };

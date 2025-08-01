@@ -1,8 +1,9 @@
-import type { CommentVote, PostVote } from "@prisma/client";
+import { PostVote, CommentVote } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { formatDistanceToNowStrict } from "date-fns";
-import locale from "date-fns/locale/en-IN";
 import { twMerge } from "tailwind-merge";
+// import locale from "date-fns/locale/en-IN";
+import { enIN } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -49,10 +50,7 @@ function formatDistance(token: string, count: number, options?: any): string {
 export function formatTimeToNow(date: Date): string {
   return formatDistanceToNowStrict(date, {
     addSuffix: true,
-    locale: {
-      ...locale,
-      formatDistance,
-    },
+    locale: enIN,
   });
 }
 

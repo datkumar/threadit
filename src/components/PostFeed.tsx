@@ -1,6 +1,5 @@
 "use client";
 
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/constants";
 import { getVoteSum } from "@/lib/utils";
 import { ExtendedPost } from "@/types/db";
 import { useIntersection } from "@mantine/hooks";
@@ -10,6 +9,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useRef } from "react";
 import Post from "./Post";
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/constants";
 
 // Note: Could also use 'useIntersectionObserver' instead of 'useIntersection'
 

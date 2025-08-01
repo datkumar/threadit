@@ -1,3 +1,5 @@
+// Module declarations for Editor.js plugins
+declare module "@editorjs/header";
 declare module "@editorjs/link";
 declare module "@editorjs/embed";
 declare module "@editorjs/code";

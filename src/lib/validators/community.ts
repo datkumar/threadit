@@ -8,7 +8,7 @@ export const CommunityValidator = z.object({
     .string()
     .min(3, "Community name must be at least 3 characters long")
     .max(25, "Community name can be max 25 characters long")
-    .regex(CommunityNameRegex, "Invalid chareacters present"),
+    .regex(CommunityNameRegex, "Invalid characters present"),
 });
 
 export type CreateCommunityPayload = z.infer<typeof CommunityValidator>;
